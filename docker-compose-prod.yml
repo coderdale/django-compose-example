@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  proxy:
+    build: ../cd-nginx
+  db:
+    image: postgres
+  web:
+    build: .
+    environment:
+      - DJANGO_SETTINGS_MODULE=composeexample.settings.production
+    command: gunicorn -b 0.0.0.0:8000 composeexample.wsgi:application
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - proxy
