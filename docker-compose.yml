@@ -3,10 +3,17 @@ version: '3'
 services:
   db:
     image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres1
+      - POSTGRES_USER=pgadmin
+      - POSTGRES_DB=composeexample
   web:
     build: .
     environment:
       - DJANGO_SETTINGS_MODULE=composeexample.settings.development
+      - POSTGRES_PASSWORD=postgres1
+      - POSTGRES_USER=pgadmin
+      - POSTGRES_DB=composeexample
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code

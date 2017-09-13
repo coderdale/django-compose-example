@@ -1,19 +1,30 @@
 version: '3'
-
 services:
   proxy:
     build: ../cd-nginx
+    volumes:
+      - ../cd-nginx/certs:/etc/letsencrypt
+    ports:
+      - "443:443"
+    depends_on:
+      - web
   db:
     image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres1
+      - POSTGRES_USER=pgadmin
+      - POSTGRES_DB=composeexample
   web:
     build: .
     environment:
       - DJANGO_SETTINGS_MODULE=composeexample.settings.production
+      - POSTGRES_PASSWORD=postgres1
+      - POSTGRES_USER=pgadmin
+      - POSTGRES_DB=composeexample
     command: gunicorn -b 0.0.0.0:8000 composeexample.wsgi:application
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "8000"
     depends_on:
       - db
-      - proxy

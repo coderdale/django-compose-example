@@ -25,7 +25,7 @@ SECRET_KEY = 'mqtf9wou2qm5($tmsxnuzpc^1^yijvb7p+7adtsq#+#4id42kt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = ['0.0.0.0', '.example.com']
 
 
 # Application definition
@@ -76,8 +76,9 @@ WSGI_APPLICATION = 'composeexample.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
+        'NAME': os.environ['POSTGRES_DB'],
+        'USER': os.environ['POSTGRES_USER'],
+        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
         'HOST': 'db',
         'PORT': 5432,
     }
@@ -122,12 +123,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# SECURE_HSTS_SECONDS = 60000
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# SECURE_BROWSER_XSS_FILTER = True
-# SESSION_COOKIE_SECURE = True
-# X_FRAME_OPTIONS = 'DENY'
-# SECURE_HSTS_PRELOAD = True
-# SECURE_SSL_REDIRECT = True
-# CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 60000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SESSION_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_PRELOAD = True
+# SECURE_SSL_REDIRECT = True # causing trouble and honestly we already do this in nginx
+CSRF_COOKIE_SECURE = True
